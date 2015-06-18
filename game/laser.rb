@@ -13,7 +13,7 @@ class Laser
 	attr_reader :height
 	attr_reader :size
 
-	V = 14 #velocity pixels/frame
+	V = 16 #velocity pixels/frame
 	def initialize x, y, rot, angle
 		@x, @y, @rot, @angle = x, y, rot, angle
 		@img = Gosu::Image.new('images/laser_beam.png')

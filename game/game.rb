@@ -15,7 +15,7 @@ class Game < Gosu::Window
   
   FIRING_PERIOD = 280 # period (ms) between successive laser blasts
   FIRING_DURATION = FIRING_PERIOD / 2 # duration (ms) over which the blast flares display
-  SIZEL = 1.2 # size factor of laser flare
+  SIZEL = 1.5 # size factor of laser flare
   DIST = 20 # distance of laser flare from center of ship
 
   def initialize
@@ -34,11 +34,11 @@ class Game < Gosu::Window
 
     @laser = []
 
-    @bgMusic = Gosu::Sample.new('sounds/bg_music.ogg')
-    @bgMusic.play 2, 1, true
+    @bgMusic = Gosu::Song.new('sounds/bg_music.ogg')
+    @bgMusic.play true
 
     @laserFlare = Gosu::Image.new('images/laser_flare.png')
-    @soundLaser = Gosu::Sample.new('sounds/explosion1.ogg')
+    @soundLaser = Gosu::Sample.new('sounds/pew.ogg')
 
     @cleanup = 30 # number of frams after which object cleanup is performed
     @count = 0 # count frames up to cleanup time
@@ -135,8 +135,8 @@ class Game < Gosu::Window
 # Laser "pushes" rock in the direction laser was travelling in
 # How hard this push is is inversely proportional to rock size
           if l.xv && l.yv
-            ri.xv = ri.xv + l.xv/(ri.size*3)
-            ri.yv = ri.yv + l.yv/(ri.size*3)
+            ri.xv = ri.xv + l.xv/(ri.size*4)
+            ri.yv = ri.yv + l.yv/(ri.size*4)
           end
           @laser.delete(l)
         end

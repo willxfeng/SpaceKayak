@@ -12,7 +12,7 @@ class Kayak
 	FRAME_DELAY = 40 # amount time (ms) to hold each thruster image
 
 	ACC = 0.1 # ship acceleration (pixels/frame^2) when thrusters on
-	VMAX = 15 # ship max velocity (pixels/frame)
+	VMAX = 14 # ship max velocity (pixels/frame)
 	ZONE = 200 # radius (pixles) around ship in which cursor does not move ship
 	DEACC = 0.988 # ship deacceleration when thrusters off
 
@@ -30,7 +30,7 @@ class Kayak
 # resting image (no thrusters)
 		@rest = Gosu::Image.new('images/thrusters0.png')
 
-		@soundThrusters = Gosu::Song.new('sounds/explosion2.ogg')
+		@soundThrusters = Gosu::Sample.new('sounds/thrusters.ogg')
 
 		@window = window
 		@x = Game::WIDTH/2.0
@@ -61,7 +61,8 @@ class Kayak
 # Update image and acceleration ship when right mouse button held down
 		if Gosu::button_down? Gosu::MsRight
 			@currentFrame += 1 if frame_expired?
-			@soundThrusters.play true if !@soundThrusters.playing?
+			@inst ||= @soundThrusters.play 1, 1, true
+			@inst.resume if !@inst.playing?
 			if dist > ZONE
 				@img = @gif[@currentFrame % @gif.size]
 				if @v < VMAX
@@ -76,7 +77,7 @@ class Kayak
 			end
 # Update image and deaccelerate ship when RMB released
 		else
-			@soundThrusters.pause if @soundThrusters.playing?
+			@inst.pause if @inst && @inst.playing?
 			@img = @rest
 			@xv *= DEACC
 			@yv *= DEACC

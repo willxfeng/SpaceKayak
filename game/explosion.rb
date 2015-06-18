@@ -14,7 +14,7 @@ class Explosion
 			width, height = 64, 64
 			soundFile = 'sounds/explosion1.ogg'
 		when 2
-			imgFile = 'images/explosion2.png'
+			imgFile = 'images/explosion3.png'
 			width, height = 64, 64
 			soundFile = 'sounds/explosion2.ogg'
 		end
