@@ -1,3 +1,8 @@
+# rock.rb
+# Rock (asteroid) class
+# Author: William Feng
+# Last Modified 6/18/2015
+
 class Rock
 	attr_accessor :x
 	attr_accessor :y
@@ -10,6 +15,7 @@ class Rock
 	attr_writer :rv
 
 	def initialize
+# Randomize one of five types of asteroids
 		case rand(5)
 		when 0
 			@img = Gosu::Image.new('images/asteroid1.png')
@@ -26,13 +32,14 @@ class Rock
 		@width = @img.width
 		@height = @img.height
 
-		vMax = 6
-		side = rand(4)
+		vMax = 6 # max velocity for randomization
+		side = rand(4) # rock can originate from any side of screen
 		@x = 0
 		@y = 0
-		@xv = 0
-		@yv = 0
-		
+		@xv = 0 # x velocity
+		@yv = 0 #y velocity
+	
+# Beginning position and velocity depends on which side rock originates
 		case side
 		when 0
 			@x = rand(Game::WIDTH - @width)
@@ -56,8 +63,8 @@ class Rock
 			@yv = rand(-vMax..vMax)
 		end		
 		@rot = 0
-		@rv = rand(-15..15)
-		@size = 0.2 + rand/1.5
+		@rv = rand(-15..15) # random rotation velocity
+		@size = 0.2 + rand/1.5 # random size factor
 	end
 
 	def draw
@@ -70,8 +77,10 @@ class Rock
 		@rot += @rv
 	end
 
+# returns true if rock is off screen
 	def offScreen?
-		(@x < -@width) || (@x > (Game::WIDTH+@width)) ||
-		(@y < -@height) || (@y > (Game::HEIGHT+@height))
+		dim = @width + @height
+		(@x < -dim) || (@x > (Game::WIDTH+dim)) ||
+		(@y < -dim) || (@y > (Game::HEIGHT+dim))
 	end
 end
