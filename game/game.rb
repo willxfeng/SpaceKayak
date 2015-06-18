@@ -10,8 +10,9 @@ require './explosion'
 require './laser'
 
 class Game < Gosu::Window
-	WIDTH = (Gosu.screen_width * 1.25).floor
-	HEIGHT = (Gosu.screen_height * 1.25).floor
+  SCREEN_CORRECTION = 1.25
+	WIDTH = (Gosu.screen_width * SCREEN_CORRECTION).floor
+	HEIGHT = (Gosu.screen_height * SCREEN_CORRECTION).floor
   
   FIRING_PERIOD = 280 # period (ms) between successive laser blasts
   FIRING_DURATION = FIRING_PERIOD / 2 # duration (ms) over which the blast flares display
