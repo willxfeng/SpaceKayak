@@ -12,7 +12,7 @@ class Kayak
 	FRAME_DELAY = 40 # amount time (ms) to hold each thruster image
 
 	ACC = 0.1 # ship acceleration (pixels/frame^2) when thrusters on
-	VMAX = 14 # ship max velocity (pixels/frame)
+	VMAX = 10 # ship max velocity (pixels/frame)
 	ZONE = 200 # radius (pixles) around ship in which cursor does not move ship
 	DEACC = 0.988 # ship deacceleration when thrusters off
 
@@ -61,7 +61,7 @@ class Kayak
 # Update image and acceleration ship when right mouse button held down
 		if Gosu::button_down? Gosu::MsRight
 			@currentFrame += 1 if frame_expired?
-			@inst ||= @soundThrusters.play 1, 1, true
+			@inst ||= @soundThrusters.play 0.6, 1, true
 			@inst.resume if !@inst.playing?
 			if dist > ZONE
 				@img = @gif[@currentFrame % @gif.size]
