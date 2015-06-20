@@ -15,9 +15,9 @@ class Game < Gosu::Window
 	HEIGHT = (Gosu.screen_height * SCREEN_CORRECTION).floor
   
   FIRING_PERIOD = 280 # period (ms) between successive laser blasts
-  FIRING_DURATION = FIRING_PERIOD / 2 # duration (ms) over which the blast flares display
+  FIRING_DURATION = FIRING_PERIOD / 4 # duration (ms) over which the blast flares display
   SIZEL = 1.5 # size factor of laser flare
-  DIST = 20 # distance of laser flare from center of ship
+  DIST = 15 # distance of laser flare from center of ship
 
   def initialize
     super WIDTH, HEIGHT, true
@@ -156,20 +156,7 @@ class Game < Gosu::Window
 
 # Clean up expired or offscreen objects every @cleanup frames
     if @count >= @cleanup
-
-      @rock.each do |r|
-        @rock.delete(r) if r.offScreen?
-        @collided.shift(@collided.size/2)
-      end
-
-      @explosion.each do |e|
-        @explosion.delete(e) if e.gif_complete?
-      end
-
-      @laser.each do |l|
-        @laser.delete(l) if l.offScreen?
-      end
-      @count = 0
+      cleanup
     else
       @count += 1
     end
@@ -224,6 +211,22 @@ class Game < Gosu::Window
   def showLaserFlare?
     @startFiring &&
     (Gosu::milliseconds-@startFiring)%FIRING_PERIOD < FIRING_DURATION
+  end
+
+  def cleanup
+    @rock.each do |r|
+      @rock.delete(r) if r.offScreen?
+      @collided.shift(@collided.size/2)
+    end
+
+    @explosion.each do |e|
+      @explosion.delete(e) if e.gif_complete?
+    end
+
+    @laser.each do |l|
+      @laser.delete(l) if l.offScreen?
+    end
+    @count = 0
   end
 end
 
