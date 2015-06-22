@@ -10,9 +10,9 @@ require './explosion'
 require './laser'
 
 class Game < Gosu::Window
-  SCREEN_CORRECTION = 1.25
-	WIDTH = (Gosu.screen_width * SCREEN_CORRECTION).floor
-	HEIGHT = (Gosu.screen_height * SCREEN_CORRECTION).floor
+  SCREEN_CORRECTION = 1
+	puts WIDTH = (Gosu.screen_width * SCREEN_CORRECTION).floor
+	puts HEIGHT = (Gosu.screen_height * SCREEN_CORRECTION).floor
   
   FIRING_PERIOD = 280 # period (ms) between successive laser blasts
   FIRING_DURATION = FIRING_PERIOD / 4 # duration (ms) over which the blast flares display
@@ -23,7 +23,8 @@ class Game < Gosu::Window
     super WIDTH, HEIGHT, true
     self.caption = "Space Kayak!"
     @background = Gosu::Image.new('images/space_bg.jpg')
-    @by = -@background.height + HEIGHT
+    @bgscale = WIDTH.to_f/@background.width # scale background to screen size
+    @by = -@background.height.to_f*@bgscale + HEIGHT
     @bgspeed = 1
     @kayak = Kayak.new self
     @cursor = Gosu::Image.new('images/crosshair.png')
@@ -60,7 +61,7 @@ class Game < Gosu::Window
 
 # Move/Loop background image
     if @by > 0 
-      @by = -@background.height + HEIGHT
+      @by = -@background.height.to_f*@bgscale + HEIGHT
     else
       @by += @bgspeed
     end
@@ -164,7 +165,7 @@ class Game < Gosu::Window
 
 # Draw existing objects
   def draw
-    @background.draw(0, @by, -1)
+    @background.draw(0, @by, -1, @bgscale)
     @kayak.draw
 
     @cursor.draw(self.mouse_x-@cursor.width/2.0, self.mouse_y-@cursor.height/2.0, 2)
@@ -213,6 +214,7 @@ class Game < Gosu::Window
     (Gosu::milliseconds-@startFiring)%FIRING_PERIOD < FIRING_DURATION
   end
 
+# Deletes objects that are off screen or have expired
   def cleanup
     @rock.each do |r|
       @rock.delete(r) if r.offScreen?
