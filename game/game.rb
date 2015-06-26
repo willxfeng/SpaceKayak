@@ -10,7 +10,7 @@ require './explosion'
 require './laser'
 
 class Game < Gosu::Window
-  SCREEN_CORRECTION = 1
+  SCREEN_CORRECTION = 1.25
 	puts WIDTH = (Gosu.screen_width * SCREEN_CORRECTION).floor
 	puts HEIGHT = (Gosu.screen_height * SCREEN_CORRECTION).floor
   
@@ -18,6 +18,8 @@ class Game < Gosu::Window
   FIRING_DURATION = FIRING_PERIOD / 4 # duration (ms) over which the blast flares display
   SIZEL = 1.5 # size factor of laser flare
   DIST = 15 # distance of laser flare from center of ship
+
+  CLEANUP = 30 # number of frames after which object cleanup is performed
 
   def initialize
     super WIDTH, HEIGHT, true
@@ -42,7 +44,6 @@ class Game < Gosu::Window
     @laserFlare = Gosu::Image.new('images/laser_flare.png')
     @soundLaser = Gosu::Sample.new('sounds/pew.ogg')
 
-    @cleanup = 30 # number of frams after which object cleanup is performed
     @count = 0 # count frames up to cleanup time
     @collided = [] # array of recently collided pairs
 
@@ -155,8 +156,8 @@ class Game < Gosu::Window
       l.update
     end
 
-# Clean up expired or offscreen objects every @cleanup frames
-    if @count >= @cleanup
+# Clean up expired or offscreen objects every CLEANUP frames
+    if @count >= CLEANUP
       cleanup
     else
       @count += 1
