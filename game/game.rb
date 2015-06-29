@@ -10,7 +10,7 @@ require './explosion'
 require './laser'
 
 class Game < Gosu::Window
-  SCREEN_CORRECTION = 1.25
+  SCREEN_CORRECTION = 1
 	puts WIDTH = (Gosu.screen_width * SCREEN_CORRECTION).floor
 	puts HEIGHT = (Gosu.screen_height * SCREEN_CORRECTION).floor
   
